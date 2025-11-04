@@ -4,14 +4,15 @@ using System.Linq;
 namespace CardValidator.Api.Services
 {
     public interface ILuhnAlgorithmValidator {
-        bool IsValid(string cardNumberString);
+        bool IsValid(string? cardNumberString);
     }
 
     public class LuhnAlgorithmValidator : ILuhnAlgorithmValidator
     {
-        public bool IsValid(string cardNumberString) {
-            if (string.IsNullOrWhiteSpace(cardNumberString))
+        public bool IsValid(string? cardNumberString) {
+            if (string.IsNullOrWhiteSpace(cardNumberString)) {
                 return false;
+            }
 
             // Clean up the string: remove spaces and non-digit characters
             var numericCardNumber = new string([.. cardNumberString.Where(char.IsDigit)]);
