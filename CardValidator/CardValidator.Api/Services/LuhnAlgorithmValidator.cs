@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Http.HttpResults;
+using System.Linq;
+
 namespace CardValidator.Api.Services
 {
     public interface ILuhnAlgorithmValidator {
@@ -12,6 +15,9 @@ namespace CardValidator.Api.Services
 
             // Clean up the string: remove spaces and non-digit characters
             var numericCardNumber = new string([.. cardNumberString.Where(char.IsDigit)]);
+
+            if (numericCardNumber.Length < 8) // card numbers are usually >= 8 digits
+                return false;
 
             int sum = 0;
             bool isSecond = false;

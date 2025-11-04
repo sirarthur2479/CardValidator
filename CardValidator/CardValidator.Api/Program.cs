@@ -1,41 +1,50 @@
+using CardValidator.Api.Middleware;
+using CardValidator.Api.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options => {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var result = new BadRequestObjectResult(context.ModelState);
+            result.ContentTypes.Add("application/json");
+            return result;
+        };
+    });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Card Validator API", Version = "v1" });
+});
+
+builder.Services.AddHealthChecks();
+
+builder.Services.AddSingleton<ILuhnAlgorithmValidator, LuhnAlgorithmValidator>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
+// Enable Swagger and exception
+if (app.Environment.IsDevelopment()) {
+    app.UseSwagger();
+    app.UseSwaggerUI(c => {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Card Validator API v1");
+    });
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.UseGlobalExceptionHandler();
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllers();
+app.MapHealthChecks("/health");
 
 app.Run();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+public partial class Program { } // For integration testing
