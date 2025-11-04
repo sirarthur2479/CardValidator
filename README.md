@@ -27,3 +27,8 @@ Example Invalid credit card number request
 {
   "cardNumber": "5431 1111 1111 1112"
 }
+
+Example request to force and exception response
+{
+  "cardNumber": "force-exception"
+}
