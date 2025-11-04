@@ -1,0 +1,29 @@
+# IDE
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build output
+bin/
+obj/
+Debug/
+Release/
+out/
+publish/
+TestResults/
+
+# Java
+*.class
+
+# Logs and caches
+*.cache
+*.dswa.cache.json
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+js-test-prep/

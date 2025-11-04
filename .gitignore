@@ -1,0 +1,9 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/js-test-prep
+/CardValidator/CardValidator.Tests/obj/Debug/net9.0/CardValidator.Tests.AssemblyInfo.cs
+/CardValidator/CardValidator.Tests/obj/Debug/net9.0/CardValidator.Tests.AssemblyInfoInputs.cache
+/CardValidator/CardValidator.Api/obj/Debug/net9.0/CardValidator.Api.AssemblyInfo.cs
+/CardValidator/CardValidator.Api/obj/Debug/net9.0/CardValidator.Api.AssemblyInfoInputs.cache
